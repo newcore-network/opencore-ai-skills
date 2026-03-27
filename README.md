@@ -1,3 +1,9 @@
 # OpenCore AI Skills
 
-WIP
+Agent skills for common OpenCore workflows.
+
+## Installation
+
+```bash
+npx skills add newcore-network/opencore-ai-skills
+```
