@@ -1,0 +1,3 @@
+# OpenCore AI Skills
+
+WIP
