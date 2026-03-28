@@ -9,7 +9,7 @@
 - Choosing the wrong mode (`CORE` vs `RESOURCE` vs `STANDALONE`)
 - Omitting `coreResourceName` in server `RESOURCE` mode where the project expects it
 - Creating decorated classes without `@Controller()`
-- Writing controllers that are never imported or autoloaded
+- Manually importing controller files in the entrypoint — OpenCore autoloads controllers, explicit imports are unnecessary
 - Using `@OnNet(...)` or `@Command(...)` without `Player` as the first server parameter
 - Accepting complex payloads without schema validation
 - Using `@OnLibraryEvent()` as if it listens to net events
@@ -25,7 +25,7 @@ Before finishing OpenCore code, verify:
 - [ ] Bootstrap exists (`await init({ mode: '...' })`) and uses the correct mode
 - [ ] Server resource in `RESOURCE` mode includes `coreResourceName` when needed
 - [ ] Every handler class has `@Controller()`
-- [ ] New controller files are reachable by imports or autoload
+- [ ] New controller files are placed in the directory scanned by autoload (no manual import needed)
 - [ ] Server command/net handlers have `Player` as the first parameter
 - [ ] Sensitive or structured inputs use `zod`
 - [ ] Guards and throttles are present where abuse or privilege boundaries exist
