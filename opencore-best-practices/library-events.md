@@ -5,28 +5,33 @@ Use library wrappers for internal domain events. Use net events and RPC for tran
 ## Creating a library
 
 ```ts
-import { Server } from '@open-core/framework/server'
-import { Client } from '@open-core/framework/client'
+import { createServerLibrary } from '@open-core/framework/server'
+import { createClientLibrary } from '@open-core/framework/client'
 
 // Server side
-const characters = Server.createServerLibrary('characters')
+const characters = createServerLibrary('characters')
 
 // Client side
-const inventory = Client.createClientLibrary('inventory')
+const inventory = createClientLibrary('inventory')
 ```
 
 ## Emitting and listening
 
 ```ts
-import { Controller, OnLibraryEvent, Server } from '@open-core/framework/server'
+import { Controller, OnLibraryEvent, createServerLibrary } from '@open-core/framework/server'
+import type { LibraryEventMetadata } from '@open-core/framework/server'
 
-const characters = Server.createServerLibrary('characters')
+const characters = createServerLibrary('characters')
 
 @Controller()
 export class CharacterListeners {
   @OnLibraryEvent('characters', 'session:created')
-  onSessionCreated(payload: { sessionId: string; playerId: number }) {
+  onSessionCreated(
+    payload: { sessionId: string; playerId: number },
+    meta: LibraryEventMetadata,
+  ) {
     // react to domain event
+    // meta.eventId === 'characters:session:created'
   }
 }
 
@@ -37,6 +42,11 @@ characters.emit('session:created', { sessionId: 's-1', playerId: 10 })
 ## Key rule
 
 `@OnLibraryEvent()` listens only to `library.emit(...)` calls from the same library. It does **not** listen to arbitrary net events, CitizenFX events, or external emits unless the framework docs explicitly say so.
+
+It also does **not** observe transport bridge methods:
+- `emitExternal(...)`
+- `emitNetExternal(...)`
+- `emitServer(...)`
 
 ## When to use what
 

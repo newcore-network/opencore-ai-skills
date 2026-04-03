@@ -51,12 +51,12 @@ Always check the project's existing resources to confirm the correct core resour
 
 ## Setup functions (run BEFORE init)
 
-These must be called **before** `init()`. They wire up contracts that the framework requires:
+Setup APIs are for advanced customization. They must be called **before** `init()`:
 
 ```ts
 import { setPrincipalProvider, setPersistenceProvider, setSecurityHandler } from '@open-core/framework/server'
 
-setPrincipalProvider(MyPrincipalProvider)      // REQUIRED in CORE and STANDALONE
+setPrincipalProvider(MyPrincipalProvider)      // Optional override (see note below)
 setPersistenceProvider(MyPlayerPersistence)    // Optional — default is in-memory
 setSecurityHandler(MySecurityHandler)          // Optional
 // setNetEventSecurityObserver(...)             // Optional
@@ -65,7 +65,17 @@ setSecurityHandler(MySecurityHandler)          // Optional
 await init({ mode: 'CORE' })
 ```
 
-**`PrincipalProvider` is required in `CORE` and `STANDALONE` modes.** If missing, the framework fails fast with a fatal error at bootstrap. `RESOURCE` mode delegates this to CORE and does not need it.
+`set*` setup calls made after `init()` are too late and may be ignored.
+
+## Zero-config defaults
+
+OpenCore follows a zero-config model in current docs:
+
+- `init({ mode: 'CORE' })` is valid for many projects
+- Default implementations exist for core systems
+- Setup APIs are used when you need custom behavior (custom principal, persistence, observers, etc.)
+
+For security-sensitive projects, configure explicit providers instead of relying on defaults.
 
 ## Dev mode
 
@@ -97,6 +107,6 @@ See [plugins.md](./plugins.md) for how to author plugins.
 2. Register core services
 3. Load framework controllers
 4. Register system processors
-5. Check required providers (fails fast if missing)
+5. Resolve setup providers and required contracts
 6. Scan decorators and bind runtime behavior
 7. Emit `core:ready`

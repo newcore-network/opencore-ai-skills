@@ -19,9 +19,9 @@ See [imports-entrypoints.md](./imports-entrypoints.md) for:
 ## Bootstrap
 
 See [bootstrap.md](./bootstrap.md) for:
-- Server `Server.init(...)` and Client `Client.init(...)` patterns
+- `init(...)` patterns for server/client runtime entrypoints
 - Mode selection: `CORE`, `RESOURCE`, `STANDALONE`
-- `coreResourceName` requirement in RESOURCE mode
+- Setup API timing (`set*Provider` before `init`) and zero-config defaults
 
 ## Controller Discovery
 
@@ -62,7 +62,7 @@ See [library-events.md](./library-events.md) for:
 
 See [adapters.md](./adapters.md) for:
 - FiveM adapter setup (`@open-core/fivem-adapter/server`, `/client`)
-- `adapter` option in `init(...)`
+- `adapter` configuration in `opencore.config.ts`
 - Don't invent adapter APIs rule
 
 ## Runtime Constraints
@@ -71,6 +71,13 @@ See [runtime-constraints.md](./runtime-constraints.md) for:
 - Server (Node.js), Client (neutral JS), NUI (browser) environments
 - APIs forbidden in client runtime
 - Where persistence and heavy logic belong
+
+## Vite Configuration (Views / NUI)
+
+See [vite-configuration.md](./vite-configuration.md) for:
+- When to use Vite vs vanilla views in OpenCore CLI
+- Recommended `@open-core/cli/vite` helper pattern
+- Common Vite anti-patterns in OpenCore projects
 
 ## Plugins & Extensions
 

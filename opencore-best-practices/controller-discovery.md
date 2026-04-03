@@ -8,11 +8,11 @@ Every class that contains framework handlers (`@Command`, `@OnNet`, `@OnRPC`, `@
 
 ## Discovery via autoload
 
-OpenCore includes a built-in autoload system that scans directories for controller files. **You do not need to import controllers manually.** Simply place the controller file in the correct directory and the runtime will discover it automatically.
+OpenCore discovery is metadata-driven and may rely on compiler-generated auto-imports in many projects. Some setups still use explicit imports in entrypoints.
 
 When adding a new controller:
 1. Decorate the class with `@Controller()`
-2. Place the file in the directory scanned by the autoload system
-3. No explicit import is needed — the framework handles discovery
+2. Follow the project's discovery strategy (autoload/auto-import or explicit entrypoint imports)
+3. Verify the controller is actually loaded in your runtime build
 
-Never import controller files manually in the entrypoint just to register them; the autoload system makes this unnecessary and redundant.
+Do not assume discovery behavior blindly — check current project/compiler configuration and existing patterns before adding or removing imports.

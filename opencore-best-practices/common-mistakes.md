@@ -4,17 +4,18 @@
 
 - Importing server decorators from `@open-core/framework` instead of `@open-core/framework/server`
 - Using `Server.init()` / `Client.init()` instead of the named `init()` export from the entrypoint
-- Forgetting to call `setPrincipalProvider(...)` before `init()` in CORE or STANDALONE mode (causes fatal bootstrap error)
 - Forgetting `await init(...)` on server or client
 - Choosing the wrong mode (`CORE` vs `RESOURCE` vs `STANDALONE`)
 - Omitting `coreResourceName` in server `RESOURCE` mode where the project expects it
 - Creating decorated classes without `@Controller()`
-- Manually importing controller files in the entrypoint — OpenCore autoloads controllers, explicit imports are unnecessary
+- Calling setup APIs (`setPrincipalProvider`, `setPersistenceProvider`, etc.) after `init()` (too late)
+- Assuming controller discovery works without checking the project/compiler setup (autoload vs explicit imports)
 - Using `@OnNet(...)` or `@Command(...)` without `Player` as the first server parameter
 - Accepting complex payloads without schema validation
 - Using `@OnLibraryEvent()` as if it listens to net events
 - Overusing `@Public()` and bypassing security accidentally
 - Writing Node.js-specific APIs (`fs`, `path`, etc.) in client runtime files
+- Mixing browser/Vite view code with client runtime code
 - Mixing transport concerns (net events) with domain-event concerns (library events)
 
 ## Pre-submission checklist
@@ -24,12 +25,14 @@ Before finishing OpenCore code, verify:
 - [ ] Imports use the correct runtime entrypoint (`/server` or `/client`)
 - [ ] Bootstrap exists (`await init({ mode: '...' })`) and uses the correct mode
 - [ ] Server resource in `RESOURCE` mode includes `coreResourceName` when needed
+- [ ] Any setup API calls (`set*Provider`) happen before `init()`
 - [ ] Every handler class has `@Controller()`
-- [ ] New controller files are placed in the directory scanned by autoload (no manual import needed)
+- [ ] Controller discovery strategy matches the project setup (autoload or explicit imports)
 - [ ] Server command/net handlers have `Player` as the first parameter
 - [ ] Sensitive or structured inputs use `zod`
 - [ ] Guards and throttles are present where abuse or privilege boundaries exist
 - [ ] Client code avoids Node-only APIs
+- [ ] View (Vite/NUI) code and client runtime code stay separated by environment
 - [ ] Library events and net events are not conflated
 
 ## Quick decision guide
