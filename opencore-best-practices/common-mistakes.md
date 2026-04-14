@@ -17,6 +17,7 @@
 - Writing Node.js-specific APIs (`fs`, `path`, etc.) in client runtime files
 - Mixing browser/Vite view code with client runtime code
 - Mixing transport concerns (net events) with domain-event concerns (library events)
+- Importing DI dependencies as `type-only` when OpenCore must resolve them during controller or service metadata scan on either server or client (for example `EventsAPI`, `RpcAPI`, `IClientRuntimeBridge`, or other runtime tokens)
 
 ## Pre-submission checklist
 
@@ -34,6 +35,7 @@ Before finishing OpenCore code, verify:
 - [ ] Client code avoids Node-only APIs
 - [ ] View (Vite/NUI) code and client runtime code stay separated by environment
 - [ ] Library events and net events are not conflated
+- [ ] Constructor dependencies that OpenCore resolves at runtime are imported as real tokens, not `type-only`
 
 ## Quick decision guide
 
